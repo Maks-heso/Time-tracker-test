@@ -81,7 +81,7 @@ export const DetailsPage = props => {
         ) : (
           <Result
             status='warning'
-            title='Record you are trying to access is not found!'
+            title='Record you are trying to access is not founds!'
             extra={
               <Button type='primary' onClick={() => history.push('/list')}>
                 Go to Records list
