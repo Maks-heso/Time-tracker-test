@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory} from 'react-router-dom'
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 import {
     Input,
@@ -9,24 +9,24 @@ import {
     Select,
     DatePicker,
     PageHeader,
-    Popconfirm,
-    Tabs,
+    Modal,
     notification
 } from 'antd';
 
 import { requestGetUsers } from '../../store/users/users-actions';
 import { requestCreateRecord } from '../../store/records/records-actions';
+import { useHistory } from 'react-router-dom'
 import styles from './styles.module.css'
 
 const { Item } = Form;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
-const { TabPane } = Tabs;
+const { confirm } = Modal;
 
 export const TimerPage = () => {
-    const history = useHistory();
     const dispatch = useDispatch();
+    const history = useHistory();
     useEffect(() => {
         dispatch(requestGetUsers())
     }, [dispatch]);
@@ -41,7 +41,7 @@ export const TimerPage = () => {
             const user = usersList.find(i => i.id === id);
             dispatch(
                 requestCreateRecord({ user, time, description }, res => {
-                    res.ok && form.resetFields();
+                    res.ok && form.resetFields();                   
                 })
             );
         } catch (errorInfo) {
@@ -51,26 +51,26 @@ export const TimerPage = () => {
             });
         }
     };
-  
-      const handleTabClick = key => {
-        history.push(`/${key}`)
+
+      const handleConfirm = () => {
+        confirm({
+            title: 'Are you sure?',
+            icon: <ExclamationCircleOutlined />,
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+                submitForm();
+            },
+          });
       }
 
     return (
         <>
             <PageHeader
                 title="Timer"
-                extra={[
-                    <Button key="1" onClick={() => history.push('/list')}>Records</Button>
-                ]}
             >
             </PageHeader>
-            <Tabs  centered  defaultActiveKey="1" onChange={handleTabClick}>
-            <TabPane tab="Tracker" key="timer">
-            </TabPane>
-            <TabPane   tab="List of tracked item" key="list">  
-     </TabPane>
-     </Tabs>
             <Form form={form} name="timer" layout="vertical" scrollToFirstError={true}>
             <div className={styles.timerWrap}>
                 <div className={styles.itemWrap}>
@@ -107,17 +107,10 @@ export const TimerPage = () => {
                                 </Item>
                                 </div>
                                 <Item>
-                                    <Popconfirm
-                                        placement="rightTop"
-                                        title="Are you sure?"
-                                        okText="Yes"
-                                        cancelText="No"
-                                        onConfirm={submitForm}
-                                    >
-                                        <Button className={styles.submit} type="primary">
+                                        <Button onClick={handleConfirm}  className={styles.submit} type="primary">
                                             Submit
                                         </Button>
-                                    </Popconfirm>
+                                   
                                 </Item>
             </Form>
             

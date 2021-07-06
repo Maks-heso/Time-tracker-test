@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom'
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 import {
     List,
     Button,
     Result,
-    Popconfirm,
+    Modal,
     PageHeader,
 } from 'antd';
 
@@ -15,7 +16,7 @@ import styles from './styles.module.css'
 
 const { Item } = List;
 const { Meta } = Item;
-
+const { confirm } = Modal;
 export const RecordsPage = () => {
             const history = useHistory();
     const dispatch = useDispatch();
@@ -25,14 +26,36 @@ export const RecordsPage = () => {
     const { recordsList } = useSelector((state) => state.records);
     const handleDeleteRecordById = recordId => dispatch(requestDeleteRecordById(recordId));
     const handleDeleteRecord = () => dispatch(requestDeleteRecord())
+    const handleConfirmById = (id) => {
+        confirm({
+            title: 'Are you sure you want to delete this record?',
+            icon: <ExclamationCircleOutlined />,
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+                handleDeleteRecordById(id);
+            },
+          });
+      }
 
+      const handleConfirmAll = () => {
+        confirm({
+            title: 'Are you sure you want to delete all records?',
+            icon: <ExclamationCircleOutlined />,
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+                handleDeleteRecord();
+            },
+          });
+      }
+    console.log(recordsList)
     return (
         <>
             <PageHeader
                 title="Records"
-                extra={[
-                    <Button key="1" onClick={() => history.push('/timer')}>Timer</Button>
-                ]}
             >
             </PageHeader>
             <div className={styles.recordsWrap}>
@@ -44,22 +67,15 @@ export const RecordsPage = () => {
                                     dataSource={recordsList}
                                     renderItem={item => (
                                     <Item
-                                        actions={[
-                                            <Popconfirm
-                                                placement="left"
-                                                title="Are you sure?"
-                                                okText="Yes"
-                                                cancelText="No"
-                                                onConfirm={() => handleDeleteRecordById(item.id)}
-                                            >
-                                                <Button type="danger">
+                                        actions={[ 
+                                            <div>         
+                                                <Button onClick={() => handleConfirmById(item.id)} type="danger">
                                                     Delete
                                                 </Button>
-                                            </Popconfirm>,
-                                            
                                             <Button type="primary" onClick={() => history.push(`/item/${item.id}`)}>
                                                 Details
                                             </Button>,
+                                            </div>   
                                         ]}
                                         >
                                         <Meta
@@ -69,7 +85,7 @@ export const RecordsPage = () => {
                                     </Item>
                                     )}
                                 />
-                                 <Button className={styles.deleteAll} onClick={() => handleDeleteRecord()} type="danger">
+                                 <Button className={styles.deleteAll} onClick={() => handleConfirmAll()} type="danger">
                                                     Delete All
                                                 </Button>
                                     </>
