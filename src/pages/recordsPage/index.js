@@ -14,9 +14,6 @@ const { confirm } = Modal
 export const RecordsPage = () => {
   const history = useHistory()
   const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(requestGetRecords())
-  }, [dispatch])
   const { recordsList } = useSelector(state => state.records)
   const handleDeleteRecordById = recordId => dispatch(requestDeleteRecordById(recordId))
   const handleDeleteRecord = () => dispatch(requestDeleteRecord())
@@ -45,7 +42,10 @@ export const RecordsPage = () => {
       },
     })
   }
-  console.log(recordsList)
+  useEffect(() => {
+    dispatch(requestGetRecords())
+  }, [dispatch])
+
   return (
     <>
       <PageHeader title='Records'></PageHeader>
