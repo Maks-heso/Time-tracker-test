@@ -1,14 +1,14 @@
-import axios from 'axios';
+import axios from 'axios'
 
 const instance = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
+  baseURL: process.env.REACT_APP_API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
 
 export const getUsers = () =>
-    instance({
-        url: `/users`,
-        method: 'GET',
-    });
+  instance({
+    url: `/users`,
+    method: 'GET',
+  })
