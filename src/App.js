@@ -12,8 +12,8 @@ function App() {
           <Route exact path='/timer' component={TimerPage} />
           <Route exact path='/list' component={RecordsPage} />
           <Route exact path='/item/:id' component={DetailsPage} />
+          <Route exact path='/' render={() => <Redirect to={'/timer'} />} />
         </ParentItemPage>
-        <Route exact path='/' render={() => <Redirect to={'/timer'} />} />
       </Switch>
     </Router>
   )
