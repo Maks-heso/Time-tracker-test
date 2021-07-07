@@ -32,6 +32,7 @@ export const TimerPage = () => {
       dispatch(
         requestCreateRecord({ user, time, description }, res => {
           res.ok && form.resetFields()
+          history.push('list')
         })
       )
     } catch (errorInfo) {
