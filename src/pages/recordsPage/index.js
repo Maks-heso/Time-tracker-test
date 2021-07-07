@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 
-import { List, Button, Result, Modal, PageHeader } from 'antd'
+import { List, Button, Modal, PageHeader } from 'antd'
 
 import { requestGetRecords, requestDeleteRecord, requestDeleteRecordById } from '../../store/records/records-actions'
 import styles from './styles.module.css'
@@ -81,17 +81,7 @@ export const RecordsPage = () => {
               Delete All
             </Button>
           </>
-        ) : (
-          <Result
-            status='warning'
-            title='Results list is empty, try to add one!'
-            extra={
-              <Button type='primary' onClick={() => history.push('timer')}>
-                Go to Timer
-              </Button>
-            }
-          />
-        )}
+        ) : null}
       </div>
     </>
   )
